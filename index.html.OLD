@@ -10,8 +10,50 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
+
+        
+
         <div class="container site">
             <h1 class="text-logo"><span class="bi-shop"></span> Burger Code <span class="bi-shop"></span></h1>
+
+            <button onclick="afficherCocktails()">Afficher les Cocktails</button>
+
+    <div id="resultats"></div>
+
+    <script>
+        function afficherCocktails() {
+
+            var apiUrl = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita';
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    afficherResultats(data);
+                })
+                .catch(error => console.error('Erreur de requête à l\'API:', error));
+        }
+
+        function afficherResultats(data) {
+            var resultatsContainer = document.getElementById('resultats');
+            resultatsContainer.innerHTML = '';
+
+            if (data.drinks) {
+
+                data.drinks.forEach(cocktail => {
+                    var cocktailNom = cocktail.strDrink;
+                    var cocktailImage = cocktail.strDrinkThumb;
+
+                    var cocktailElement = document.createElement('div');
+                    cocktailElement.innerHTML = '<h3>' + cocktailNom + '</h3>' +
+                        '<img src="' + cocktailImage + '" alt="' + cocktailNom + '">';
+
+                    resultatsContainer.appendChild(cocktailElement);
+                });
+            } else {
+                resultatsContainer.innerHTML = '<p>Aucun cocktail trouvé.</p>';
+            }
+        }
+    </script>
             
             <nav>
                 <ul class="nav nav-pills" role="tablist">
